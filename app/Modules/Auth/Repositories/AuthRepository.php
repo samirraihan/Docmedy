@@ -2,17 +2,18 @@
 
 namespace App\Modules\Auth\Repositories;
 
+use App\Core\Base\BaseRepository;
 use App\Models\User;
 
-class AuthRepository
+class AuthRepository extends BaseRepository
 {
-    public function createUser(array $data)
+    public function __construct(User $model)
     {
-        return User::create($data);
+        parent::__construct($model);
     }
-    
-    public function findByEmail($email)
+
+    public function findByEmail(string $email)
     {
-        return User::where('email', $email)->first();
+        return $this->model->where('email', $email)->first();
     }
 }
