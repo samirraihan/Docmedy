@@ -23,7 +23,7 @@ class MakeModule extends Command
             "Services",
             "Repositories",
             "DTO",
-            "Routes",
+            "Routes/V1",
             "Tests"
         ];
 
