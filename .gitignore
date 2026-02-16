@@ -40,6 +40,7 @@ public/vendor/
 # Ignore generated Scribe views
 /resources/views/scribe/index.blade.php
 /resources/views/scribe_mobile/index.blade.php
+/resources/views/vendor/scribe
 
 # Docker persistent data directories
 /.docker/data/
