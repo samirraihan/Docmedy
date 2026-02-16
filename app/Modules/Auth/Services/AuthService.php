@@ -11,6 +11,13 @@ class AuthService
         protected AuthRepository $repo
     ) {}
 
+    public function register(array $data)
+    {
+        $data['password'] = bcrypt($data['password']);
+
+        return $this->repo->createUser($data);
+    }
+
     public function login(array $data)
     {
         if (!Auth::attempt($data)) {
@@ -24,5 +31,22 @@ class AuthService
             'user' => $user,
             'token' => $token
         ];
+    }
+
+    public function logout($user)
+    {
+        $user->currentAccessToken()->delete();
+    }
+
+    public function forgotPassword($email)
+    {
+        // later OTP / mail integration
+        return true;
+    }
+
+    public function resetPassword($data)
+    {
+        // implement token reset later
+        return true;
     }
 }
