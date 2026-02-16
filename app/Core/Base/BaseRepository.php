@@ -4,16 +4,21 @@ namespace App\Core\Base;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BaseRepository
+abstract class BaseRepository
 {
     protected Model $model;
+
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
 
     public function all()
     {
         return $this->model->all();
     }
 
-    public function find($id)
+    public function find(int $id)
     {
         return $this->model->findOrFail($id);
     }
@@ -23,14 +28,14 @@ class BaseRepository
         return $this->model->create($data);
     }
 
-    public function update($id, array $data)
+    public function update(int $id, array $data)
     {
         $record = $this->find($id);
         $record->update($data);
         return $record;
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         return $this->find($id)->delete();
     }
