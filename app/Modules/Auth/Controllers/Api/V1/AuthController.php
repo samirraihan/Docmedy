@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Core\Responses\ApiResponse;
 use App\Modules\Auth\Services\AuthService;
 use App\Modules\Auth\Requests\V1\LoginRequest;
-use App\Modules\Auth\Requests\V1\RegisterRequest;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -16,20 +15,6 @@ class AuthController extends Controller
     public function __construct(
         protected AuthService $service
     ) {}
-
-    /**
-     * Register User
-     *
-     * Register a new system user.
-     *
-     * @group Auth
-     */
-    public function register(RegisterRequest $request)
-    {
-        $user = $this->service->register($request->validated());
-
-        return $this->success($user,'User registered');
-    }
 
     /**
      * Login

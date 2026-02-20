@@ -11,13 +11,6 @@ class AuthService
         protected AuthRepository $repo
     ) {}
 
-    public function register(array $data)
-    {
-        $data['password'] = bcrypt($data['password']);
-
-        return $this->repo->createUser($data);
-    }
-
     public function login(array $data)
     {
         if (!Auth::attempt($data)) {
