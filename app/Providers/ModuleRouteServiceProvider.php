@@ -20,12 +20,24 @@ class ModuleRouteServiceProvider extends ServiceProvider
 
         foreach ($modules as $module) {
 
-            $routePath = $module . '/Routes/V1/api.php';
+            $routesPath = $module . '/Routes';
 
-            if (File::exists($routePath)) {
-                Route::middleware('api')
-                    ->prefix('api')
-                    ->group($routePath);
+            if (!File::exists($routesPath)) {
+                continue;
+            }
+
+            // Detect versions automatically (V1, V2, V3...)
+            $versions = File::directories($routesPath);
+
+            foreach ($versions as $versionPath) {
+
+                $apiFile = $versionPath . '/api.php';
+
+                if (File::exists($apiFile)) {
+                    Route::middleware('api')
+                        ->prefix('api')
+                        ->group($apiFile);
+                }
             }
         }
     }
