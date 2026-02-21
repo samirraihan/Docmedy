@@ -2,6 +2,7 @@
 
 namespace App\Modules\Auth\Pipelines;
 
+use App\Modules\Auth\DTO\LoginContext;
 use App\Modules\Auth\Actions\Login\CheckRateLimitAction;
 use App\Modules\Auth\Actions\Login\ValidateCredentialsAction;
 use App\Modules\Auth\Actions\Login\ValidateRoleAction;
@@ -15,24 +16,25 @@ class LoginPipeline
         protected CheckRateLimitAction $rateLimit,
         protected ValidateCredentialsAction $credentials,
         protected ValidateRoleAction $role,
-        protected ValidateBranchAction $branch,
+        // protected ValidateBranchAction $branch,
         protected IssueTokenAction $token,
         protected LogLoginAction $log
     ) {}
 
     public function execute(array $data)
     {
-        $this->rateLimit->execute();
+        $context = new LoginContext($data);
 
-        $user = $this->credentials->execute($data);
+        $this->rateLimit->execute($context);
+        $this->credentials->execute($context);
+        $this->role->execute($context);
+        // $this->branch->execute($context);
+        $this->token->execute($context);
+        $this->log->execute($context);
 
-        $this->role->execute($user);
-        $this->branch->execute($user);
-
-        $result = $this->token->execute($user);
-
-        $this->log->execute($user);
-
-        return $result;
+        return [
+            'user' => $context->user,
+            'token' => $context->token,
+        ];
     }
 }
