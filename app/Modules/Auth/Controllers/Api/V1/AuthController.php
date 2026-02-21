@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Core\Responses\ApiResponse;
 use App\Modules\Auth\Services\AuthService;
 use App\Modules\Auth\Requests\V1\LoginRequest;
+use App\Modules\Auth\Resources\V1\AuthUserResource;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -29,7 +30,10 @@ class AuthController extends Controller
             $request->validated()
         );
 
-        return $this->success($result, 'Login successful');
+        return $this->success([
+            'user' => new AuthUserResource($result['user']),
+            'token' => $result['token']
+        ], 'Login successful');
     }
 
     /**
