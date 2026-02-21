@@ -25,13 +25,11 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $result = $this->service->login($request->validated());
+        $result = $this->service->login(
+            $request->validated()
+        );
 
-        if (!$result) {
-            return $this->error('Invalid credentials',401);
-        }
-
-        return $this->success($result,'Login successful');
+        return $this->success($result, 'Login successful');
     }
 
     /**
@@ -46,7 +44,7 @@ class AuthController extends Controller
     {
         $this->service->logout($request->user());
 
-        return $this->success(null,'Logged out');
+        return $this->success(null, 'Logged out');
     }
 
     /**
@@ -60,7 +58,7 @@ class AuthController extends Controller
     {
         $this->service->forgotPassword($request->email);
 
-        return $this->success(null,'Reset instructions sent');
+        return $this->success(null, 'Reset instructions sent');
     }
 
     /**
@@ -74,6 +72,6 @@ class AuthController extends Controller
     {
         $this->service->resetPassword($request->all());
 
-        return $this->success(null,'Password reset successful');
+        return $this->success(null, 'Password reset successful');
     }
 }
