@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Modules\Auth\Controllers\Api\V1\AuthController;
 
 Route::prefix('v1/auth')->group(function () {
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login'])->middleware('throttle:login');
     Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
     Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
