@@ -2,43 +2,38 @@
 
 namespace App\Modules\Auth\Services;
 
-use App\Modules\Auth\Interfaces\AuthRepositoryInterface;
-use Illuminate\Support\Facades\Auth;
+use App\Core\Base\BaseService;
+use App\Modules\Auth\Actions\ForgotPasswordAction;
+use App\Modules\Auth\Actions\LoginAction;
+use App\Modules\Auth\Actions\LogoutAction;
+use App\Modules\Auth\Actions\ResetPasswordAction;
 
-class AuthService
+class AuthService extends BaseService
 {
     public function __construct(
-        protected AuthRepositoryInterface $repo
+        protected LoginAction $loginAction,
+        protected LogoutAction $logoutAction,
+        protected ForgotPasswordAction $forgotPasswordAction,
+        protected ResetPasswordAction $resetPasswordAction,
     ) {}
 
     public function login(array $data)
     {
-        if (!Auth::attempt($data)) {
-            return false;
-        }
-
-        $user = Auth::user();
-
-        return [
-            'user' => $user,
-            'token' => $user->createToken('auth_token')->plainTextToken
-        ];
+        return $this->loginAction->execute($data);
     }
 
-    public function logout($user)
+    public function logout($user): void
     {
-        $user->currentAccessToken()->delete();
+        $this->logoutAction->execute($user);
     }
 
     public function forgotPassword($email)
     {
-        // later OTP / mail integration
-        return true;
+        return $this->forgotPasswordAction->execute($email);
     }
 
     public function resetPassword($data)
     {
-        // implement token reset later
-        return true;
+        return $this->resetPasswordAction->execute($data);
     }
 }
