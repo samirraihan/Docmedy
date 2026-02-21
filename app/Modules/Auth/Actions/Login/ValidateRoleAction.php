@@ -2,11 +2,13 @@
 
 namespace App\Modules\Auth\Actions\Login;
 
+use App\Modules\Auth\DTO\LoginContext;
+
 class ValidateRoleAction
 {
-    public function execute($user): void
+    public function execute(LoginContext $context): void
     {
-        if (!$user->hasAnyRole([
+        if (!$context->user->hasAnyRole([
             'super_admin',
             'admin',
             'doctor',

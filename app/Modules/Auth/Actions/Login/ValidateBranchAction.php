@@ -2,11 +2,13 @@
 
 namespace App\Modules\Auth\Actions\Login;
 
+use App\Modules\Auth\DTO\LoginContext;
+
 class ValidateBranchAction
 {
-    public function execute($user): void
+    public function execute(LoginContext $context): void
     {
-        if (!$user->branches()->exists()) {
+        if (!$context->user->branches()->exists()) {
             abort(403, 'No branch assigned');
         }
     }

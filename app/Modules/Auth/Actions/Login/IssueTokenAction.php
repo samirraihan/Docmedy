@@ -2,17 +2,16 @@
 
 namespace App\Modules\Auth\Actions\Login;
 
+use App\Modules\Auth\DTO\LoginContext;
+
 class IssueTokenAction
 {
-    public function execute($user)
+    public function execute(LoginContext $context): void
     {
         $device = request()->userAgent() ?? 'unknown';
 
-        return [
-            'user' => $user,
-            'token' => $user
-                ->createToken($device)
-                ->plainTextToken
-        ];
+        $context->token = $context->user
+            ->createToken($device)
+            ->plainTextToken;
     }
 }
