@@ -4,14 +4,14 @@ namespace App\Modules\Auth\Services;
 
 use App\Core\Base\BaseService;
 use App\Modules\Auth\Actions\ForgotPasswordAction;
-use App\Modules\Auth\Actions\LoginAction;
 use App\Modules\Auth\Actions\LogoutAction;
 use App\Modules\Auth\Actions\ResetPasswordAction;
+use App\Modules\Auth\Pipelines\LoginPipeline;
 
 class AuthService extends BaseService
 {
     public function __construct(
-        protected LoginAction $loginAction,
+        protected LoginPipeline $loginPipeline,
         protected LogoutAction $logoutAction,
         protected ForgotPasswordAction $forgotPasswordAction,
         protected ResetPasswordAction $resetPasswordAction,
@@ -19,7 +19,7 @@ class AuthService extends BaseService
 
     public function login(array $data)
     {
-        return $this->loginAction->execute($data);
+        return $this->loginPipeline->execute($data);
     }
 
     public function logout($user): void
