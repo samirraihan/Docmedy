@@ -2,11 +2,13 @@
 
 namespace App\Modules\Auth\DTO;
 
+use App\Models\User;
+
 class LoginContext
 {
     public array $credentials;
 
-    public $user = null;
+    public ?User $user = null;
 
     public ?string $token = null;
 
