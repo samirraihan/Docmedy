@@ -24,7 +24,9 @@ class MakeModule extends Command
             "Repositories",
             "DTO",
             "Routes/V1",
-            "Tests"
+            "Tests",
+            "Interfaces",
+            "Providers"
         ];
 
         foreach ($folders as $folder) {
