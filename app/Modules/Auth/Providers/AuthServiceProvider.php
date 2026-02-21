@@ -3,20 +3,19 @@
 namespace App\Modules\Auth\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Modules\Auth\Interfaces\AuthRepositoryInterface;
+use App\Modules\Auth\Repositories\AuthRepository;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            AuthRepositoryInterface::class,
+            AuthRepository::class
+        );
     }
 
-    /**
-     * Bootstrap services.
-     */
     public function boot(): void
     {
         //
