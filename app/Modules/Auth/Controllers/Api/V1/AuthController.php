@@ -30,9 +30,15 @@ class AuthController extends Controller
             $request->validated()
         );
 
+        if (!$result->success) {
+            return $this->error($result->message, 401);
+        }
+
         return $this->success([
-            'user' => new AuthUserResource($result['user']),
-            'token' => $result['token']
+            'user' => new AuthUserResource(
+                $result->data['user']
+            ),
+            'token' => $result->data['token']
         ], 'Login successful');
     }
 
