@@ -26,7 +26,8 @@ class MakeModule extends Command
             "Routes/V1",
             "Tests",
             "Interfaces",
-            "Providers"
+            "Providers",
+            "Actions",
         ];
 
         foreach ($folders as $folder) {
