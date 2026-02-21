@@ -4,14 +4,15 @@ namespace App\Modules\Auth\Actions\Login;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Core\Results\ActionResult;
 use App\Modules\Auth\DTO\LoginContext;
 
 class ValidateCredentialsAction
 {
-    public function execute(LoginContext $context): void
+    public function execute(LoginContext $context): ActionResult
     {
         if (!Auth::attempt($context->credentials)) {
-            abort(401, 'Invalid credentials');
+            return ActionResult::fail('Invalid credentials');
         }
 
         RateLimiter::clear(
@@ -20,5 +21,7 @@ class ValidateCredentialsAction
         );
 
         $context->user = Auth::user();
+
+        return ActionResult::success();
     }
 }

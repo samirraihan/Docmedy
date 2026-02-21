@@ -2,8 +2,8 @@
 
 namespace App\Modules\Auth\Actions\Login;
 
+use App\Core\Results\ActionResult;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Validation\ValidationException;
 use App\Modules\Auth\DTO\LoginContext;
 
 class CheckRateLimitAction
@@ -11,27 +11,17 @@ class CheckRateLimitAction
     protected int $maxAttempts = 5;
     protected int $decaySeconds = 60;
 
-    public function execute(LoginContext $context): void
+    public function execute(LoginContext $context): ActionResult
     {
-        $key = $this->throttleKey($context);
+        $key = strtolower($context->credentials['email'])
+            . '|' . request()->ip();
 
         if (RateLimiter::tooManyAttempts($key, $this->maxAttempts)) {
-
-            $seconds = RateLimiter::availableIn($key);
-
-            throw ValidationException::withMessages([
-                'email' => [
-                    "Too many login attempts. Try again in {$seconds} seconds."
-                ]
-            ]);
+            return ActionResult::fail('Too many login attempts');
         }
 
         RateLimiter::hit($key, $this->decaySeconds);
-    }
 
-    protected function throttleKey(LoginContext $context): string
-    {
-        return strtolower($context->credentials['email'])
-            . '|' . request()->ip();
+        return ActionResult::success();
     }
 }
